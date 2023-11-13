@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 <meta name="generator" content="AsciiDoc 10.2.0" />
-<title>LAPACK RELEASE NOTES</title>
+<title>LAPACK 3.11.0</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
@@ -728,32 +728,350 @@ install: function(toclevels) {
 }
 
 }
-asciidoc.install();
+asciidoc.install(2);
 /*]]>*/
 </script>
 </head>
 <body class="article">
 <div id="header">
-<h1>LAPACK RELEASE NOTES</h1>
+<h1>LAPACK 3.11.0</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_1_latest_lapack_release">1. Latest LAPACK Release</h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="paragraph"><p><strong>Version:</strong> 3.11.0</p></div>
-<div class="paragraph"><p><strong>Release date:</strong> November 11, 2022</p></div>
-<div class="paragraph"><p><a href="lapack-3.11.0.html"><strong>LAPACK 3.11.0 Release Notes</strong></a></p></div>
+<div class="paragraph"><p>Release date: 11/11/22.</p></div>
+<div class="paragraph"><p>This material is based upon work supported by the National Science Foundation
+and the Department of Energy.</p></div>
+<div class="paragraph"><p>LAPACK is a software package provided by Univ. of Tennessee, Univ. of
+California, Berkeley, Univ. of Colorado Denver and NAG Ltd..</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_2_latest_lapack_errata">2. Latest LAPACK Errata</h2>
+<h2 id="_1_support_and_questions">1. Support and questions:</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>LAPACK has been tested on a variety of architectures.  However, keep in mind that we do not have access to every possible type of machine, and the regrettable bug report will appear.  We apologize for any inconvenience this may cause to our users, and strongly encourage users to post your query on the <a href="http://icl.cs.utk.edu/lapack-forum">LAPACK forum</a> if you suspect an abnormality.</p></div>
-<div class="paragraph"><p><strong>NEW</strong> : bug are now tracked in our GitHub Repository</p></div>
+<div class="paragraph"><p><a href="http://icl.cs.utk.edu/lapack-forum/">http://icl.cs.utk.edu/lapack-forum/</a></p></div>
+<div class="paragraph"><p><a href="https://github.com/Reference-LAPACK/lapack/">https://github.com/Reference-LAPACK/lapack/</a></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_lapack_3_11_0_what_8217_s_new">2. LAPACK 3.11.0: What&#8217;s new</h2>
+<div class="sectionbody">
 <div class="ulist"><ul>
 <li>
 <p>
-<a href="https://github.com/Reference-LAPACK/lapack/milestone/2?closed=1">Closed bugs</a>
+Download: <a href="https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.11.tar.gz">lapack-3.11.0.tar.gz</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This is a major release and also addressing multiple bug fixes.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_1_normwise_criterion_for_infinite_eigenvalues_in_the_qz_algorithm_by_a_href_https_github_com_thijssteel_thijssteel_a">2.1. Normwise criterion for infinite eigenvalues in the QZ algorithm by <a href="https://github.com/thijssteel">@thijssteel</a></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The normwise criterion is more robust at detecting infinite eigenvalues than the elementwise criterion (<a href="https://github.com/Reference-LAPACK/lapack/pull/698">PR #698</a>). See also <a href="https://arxiv.org/abs/2208.02057">https://arxiv.org/abs/2208.02057</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_2_level_3_blas_solvers_for_the_triangular_system_and_triangular_sylvester_equations_by_a_href_https_github_com_angsch_angsch_a">2.2 level-3 BLAS solvers for the triangular system and triangular Sylvester equations by <a href="https://github.com/angsch">@angsch</a></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The triangular Sylvester equation has been recognized to be prone to overflow. For that purpose, <code>*TRSYL</code> utilizes a scaling factor to represent the solution as <code>(s^{-1} X)</code> and solve the scaled equation <code>AX + XB = s C</code>. Due to the scaling factor, there is some flexibility in the representation of the solution. The proposed level-3 BLAS version computes the scaling factors based on the upper bounds of blocks to enable level-3 BLAS. The scaling is typically slightly more aggressive so that an alternatively scaled final solution is computed. This is no problem as long as the scaling factor does not get flushed to zero (<a href="https://github.com/Reference-LAPACK/lapack/pull/651">PR #651</a>). The same upper bound calculation was used to write the level-3 BLAS solver for the triangular system, <code>*LATRS3</code>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_3_givens_rotations_generated_with_less_accumulation_error_by_a_href_https_github_com_weslleyspereira_weslleyspereira_a">2.3 Givens rotations generated with less accumulation error by <a href="https://github.com/weslleyspereira">@weslleyspereira</a></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>New algorithms for computing Givens rotations in complex arithmetic that reduce the accumulation errors for computing each of the outputs, <code>c, s, r</code>. The new algorithms are, on average, more accurate than both the algorithms from LAPACK 3.9.1 and LAPACK 3.10.0 (<a href="https://github.com/Reference-LAPACK/lapack/pull/631">PR #631</a>). See also <a href="https://arxiv.org/abs/2211.04010">https://arxiv.org/abs/2211.04010</a>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_4_faster_algorithms_for_least_squares_by_a_href_https_github_com_scr2016_scr2016_a">2.4 Faster algorithms for Least Squares by <a href="https://github.com/scr2016">@scr2016</a></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The new algorithms, <code>*GELST</code>, are similar to <code>*GELS</code>. <code>*GELST</code> avoids computing triangular blocks twice as in <code>*GELS</code>, which means <code>*GELST</code> runs faster (<a href="https://github.com/Reference-LAPACK/lapack/pull/739">PR #739</a>).</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_5_improvements_on_the_building_system_and_the_continuous_testing_framework">2.5 Improvements on the building system and the Continuous Testing framework</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+Regression test for illegal modification of Y in <code>*GEMV</code> by <a href="https://github.com/matcross">@matcross</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/622">PR #622</a>.
+</p>
+</li>
+<li>
+<p>
+Test the Fortran intrinsic ABS and complex divisions and report failures during build by <a href="https://github.com/weslleyspereira">@weslleyspereira</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/623">PR #623</a>.
+</p>
+</li>
+<li>
+<p>
+Appveyor is working in the Continuous Testing once more by <a href="https://github.com/martin-frbg">@martin-frbg</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/627">PR #627</a>.
+</p>
+</li>
+<li>
+<p>
+More tests and fixes for type mismatches by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/675">PR #675</a>.
+</p>
+</li>
+<li>
+<p>
+Solve build issues with IBM XLF by <a href="https://github.com/friedc">@friedc</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/677">PR #677</a>.
+</p>
+</li>
+<li>
+<p>
+Explicit type casts to INT by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/684">PR #684</a>.
+</p>
+</li>
+<li>
+<p>
+Fix an out-of-bounds write in the tests by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/685">PR #685</a>.
+</p>
+</li>
+<li>
+<p>
+Adding support for NAG Fortran compiler (nagfor) by <a href="https://github.com/ACSimon33">@ACSimon33</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/686">PR #686</a>.
+</p>
+</li>
+<li>
+<p>
+Fix time check flag propagation and default value by <a href="https://github.com/ACSimon33">@ACSimon33</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/696">PR #696</a>.
+</p>
+</li>
+<li>
+<p>
+Fixed format warnings in 64 bit integer builds by <a href="https://github.com/ACSimon33">@ACSimon33</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/700">PR #700</a>.
+</p>
+</li>
+<li>
+<p>
+Explicit type casts and more rigorous CI by <a href="https://github.com/weslleyspereira">@weslleyspereira</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/703">PR #703</a>.
+</p>
+</li>
+<li>
+<p>
+Fix type mismatches in function calls of testing code by <a href="https://github.com/mjacobse">@mjacobse</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/706">PR #706</a>.
+</p>
+</li>
+<li>
+<p>
+Fix lower triangular band matrix generation by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/728">PR #728</a>.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_6_other_improvements">2.6 Other improvements</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+Improves the computation of norms in <code>{S,D}ORBDB6</code> and <code>{C,Z}UNBDB6</code> by <a href="https://github.com/christoph-conrads">@Christoph Conrads</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/647">PR #647</a>.
+</p>
+</li>
+<li>
+<p>
+Uses a Newton step to compute the initial guess for <code>ETA</code> in <code>{S,D}LAED4</code> to reduce the number of iterations by <a href="https://github.com/weslleyspereira">@weslleyspereira</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/655">PR #655</a>.
+</p>
+</li>
+<li>
+<p>
+Return immediately when scaling with one by @angsch in <a href="https://github.com/Reference-LAPACK/lapack/pull/674">PR #674</a>.
+</p>
+</li>
+<li>
+<p>
+Rearrange the application of the Householder reflectors in <code>*LAQR5</code>, which lowers the instruction count when FMA is available by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/681">PR #681</a>.
+</p>
+</li>
+<li>
+<p>
+Set SCALE early for robust triangular solvers by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/712">PR #712</a>.
+</p>
+</li>
+<li>
+<p>
+Add <code>{C,Z}ROTG</code>, <code>{CS,ZD}ROT</code>,  <code>{S,D}CABS1</code> to CBLAS by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/721">PR #721</a>.
+</p>
+</li>
+<li>
+<p>
+Add <code>*LANGB</code> to LAPACKE by <a href="https://github.com/ACSimon33">@ACSimon33</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/725">PR #725</a>.
+</p>
+</li>
+<li>
+<p>
+NaN check for trapezoidal matrices on LAPACKE by <a href="https://github.com/ACSimon33">@ACSimon33</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/738">PR #738</a> and <a href="https://github.com/Reference-LAPACK/lapack/pull/742">PR #742</a>.
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_7_bug_fixes">2.7 Bug fixes</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+Fix <code>LAPACKE_*tpmqrt_work</code> for row-major matrices by <a href="https://github.com/weslleyspereira">@weslleyspereira</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/540">PR 540</a>.
+</p>
+</li>
+<li>
+<p>
+Fix leading dimension check in LAPACKE&#8217;s <code>*geesv[x]</code> and <code>*gges[x]</code> by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/665">PR 665</a>.
+</p>
+</li>
+<li>
+<p>
+Fix the left-looking variant of GEQRF by <a href="https://github.com/weslleyspereira">@weslleyspereira</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/690">PR 690</a>.
+</p>
+</li>
+<li>
+<p>
+Fix workspace query for <code>*SYEVD</code> and <code>*HEEVD</code> routines by <a href="https://github.com/">neil-lindquist</a>@neil-lindquist in <a href="https://github.com/Reference-LAPACK/lapack/pull/691">PR 691</a>.
+</p>
+</li>
+<li>
+<p>
+Fix behavior of <code>SCALE</code> in <code>*LATBS</code> and <code>*LATRS</code>, and avoids NaN generation if entries in <code>CNORM</code> exceed the overflow threshold by <a href="https://github.com/angsch">@angsch</a> in <a href="https://github.com/Reference-LAPACK/lapack/pull/712">PR 712</a>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p><strong><a href="https://github.com/Reference-LAPACK/lapack/compare/v3.10.1&#8230;v3.11">Full Changelog</a></strong></p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_developer_list">3. Developer list</h2>
+<div class="sectionbody">
+<div class="ulist"><div class="title">LAPACK developers involved in this release</div><ul>
+<li>
+<p>
+Weslley da Silva Pereira (University of Colorado Denver, USA)
+</p>
+</li>
+<li>
+<p>
+Igor Kozachenko (University of California, Berkeley, USA)
+</p>
+</li>
+<li>
+<p>
+Julie Langou (University of Tennessee, USA)
+</p>
+</li>
+</ul></div>
+<div class="ulist"><div class="title">Principal Investigators</div><ul>
+<li>
+<p>
+Jim Demmel (University of California,  Berkeley, USA)
+</p>
+</li>
+<li>
+<p>
+Jack Dongarra (University of Tennessee and ORNL, USA)
+</p>
+</li>
+<li>
+<p>
+Julien Langou (University of Colorado Denver, USA)
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_1_new_contributors">3.1 New Contributors</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://github.com/PhillHS">@PhillHS</a> made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/601">PR 601</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/mtowara">@mtowara</a> made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/663">PR 663</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/dbakshee">@dbakshee</a> made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/671">PR 671</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/ACSimon33">@ACSimon33</a> made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/686">PR 686</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/friedc">@friedc</a> made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/677">PR 677</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/">neil-lindquist</a>@neil-lindquist made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/691">PR 691</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/">ivan-pi</a>@ivan-pi made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/699">PR 699</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/">mjacobse</a>@mjacobse made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/702">PR 702</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/">MonicaLiu0311</a>@MonicaLiu0311 made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/720">PR 720</a>
+</p>
+</li>
+<li>
+<p>
+<a href="https://github.com/">eltociear</a>@eltociear made their first contribution in <a href="https://github.com/Reference-LAPACK/lapack/pull/735">PR 735</a>
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_4_thanks_again">4. Thanks again!</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+MathWorks: Penny Anderson, Mary Ann Freeman, Bobby Cheng, Pat Quillen, Christine Tobler, Heiko Weichelt.
+</p>
+</li>
+<li>
+<p>
+GitHub Users:
+ <a href="https://github.com/angsch">@angsch</a>,
+ <a href="https://github.com/christoph-conrads">@Christoph Conrads</a>
+ <a href="https://github.com/martin-frbg">@martin-frbg</a>,
+ <a href="https://github.com/thijssteel">@thijssteel</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Github contribution details <a href="https://github.com/Reference-LAPACK/lapack/graphs/contributors?from=2022-04-13&amp;to=2022-11-11&amp;type=c">here</a></p></div>
+<div class="paragraph"><p>Thanks you all!</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_5_bug_fix">5.  Bug Fix</h2>
+<div class="sectionbody">
+<div class="ulist"><ul>
+<li>
+<p>
+<a href="https://github.com/Reference-LAPACK/lapack/milestone/6?closed=1">Closed bugs</a>
 </p>
 </li>
 <li>
@@ -769,129 +1087,12 @@ asciidoc.install();
 </ul></div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_3_errata_for_lapack_users_guide_third_edition">3. Errata for LAPACK Users' Guide, Third Edition</h2>
-<div class="sectionbody">
-<div class="paragraph"><p><a href="html/errata.lug">Errata in LAPACK Users' Guide, Third Edition</a></p></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_4_history_of_lapack_releases">4. History of LAPACK releases</h2>
-<div class="sectionbody">
-<div class="paragraph"><p><strong>Version 1.0 : February 29, 1992</strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Revised, Version 1.0a:  June 30, 1992
-</p>
-</li>
-<li>
-<p>
-Revised, Version 1.0b:  October 31, 1992
-</p>
-</li>
-<li>
-<p>
-Revised, Version 1.1:   March 31, 1993
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 2.0:   September 30, 1994</strong></p></div>
-<div class="paragraph"><p><strong>Version 3.0:   June 30, 1999</strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Update, Version 3.0:  October 31, 1999
-</p>
-</li>
-<li>
-<p>
-Update, Version 3.0:  May 31, 2000
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.1.0:  November 2006 <a href="lapack-3.1.0.changes">Release Notes for 3.1.0</a></strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Version 3.1.1:  February 2007 <a href="lapack-3.1.1.changes">Release Notes for 3.1.1</a>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.2:    November 18, 2008 <a href="lapack-3.2.html">Release Notes for 3.2</a></strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Version 3.2.1:  April 17, 2009 <a href="lapack-3.2.1.html">Release Notes for 3.2.1</a>
-</p>
-</li>
-<li>
-<p>
-Version 3.2.2:  June 30, 2010 <a href="lapack-3.2.2.html">Release Notes for 3.2.2</a>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.3.0:    November 14, 2010 <a href="lapack-3.3.0.html">Release Notes for 3.3.0</a></strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Version 3.3.1: April 18, 2011 <a href="lapack-3.3.1.html">Release Notes for LAPACK 3.3.1</a>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.4.0: November 11, 2011 <a href="lapack-3.4.0.html">Release Notes for LAPACK 3.4.0</a></strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Version 3.4.1: April 20, 2012 <a href="lapack-3.4.1.html">Release Notes for LAPACK 3.4.1</a>
-</p>
-</li>
-<li>
-<p>
-Version 3.4.2: September 25, 2012 <a href="lapack-3.4.2.html">Release Notes for LAPACK 3.4.2</a>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.5.0: November 16, 2013 <a href="lapack-3.5.0.html">Release Notes for LAPACK 3.5.0</a></strong></p></div>
-<div class="paragraph"><p><strong>Version 3.6.0: November 15, 2015 <a href="lapack-3.6.0.html">Release Notes for LAPACK 3.6.0</a></strong></p></div>
-<div class="paragraph"><p><strong>Version 3.6.1: June 18, 2016 <a href="lapack-3.7.0.html">Release Notes for LAPACK 3.6.1</a></strong></p></div>
-<div class="paragraph"><p><strong>Version 3.7.0: December 24, 2016 <a href="lapack-3.7.0.html">Release Notes for LAPACK 3.7.0</a></strong></p></div>
-<div class="paragraph"><p><strong>Version 3.7.1: June 25, 2017 <a href="lapack-3.7.1.html">Release Notes for LAPACK 3.7.1</a></strong></p></div>
-<div class="paragraph"><p><strong>Version 3.8.0: November 12, 2017 <a href="lapack-3.8.0.html">Release Notes for LAPACK 3.8.0</a></strong></p></div>
-<div class="paragraph"><p><strong>Version 3.9.0: November 21, 2019 <a href="lapack-3.9.0.html">Release Notes for LAPACK 3.9.0</a></strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Version 3.9.1: April 1, 2021 <a href="lapack-3.9.1.html">Release Notes for LAPACK 3.9.1</a>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.10.0: June 28, 2021 <a href="lapack-3.10.0.html">Release Notes for LAPACK 3.10.0</a></strong></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Version 3.10.1: April 12, 2022 <a href="lapack-3.10.1.html">Release Notes for LAPACK 3.10.1</a>
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Version 3.11.0: November 11, 2022 <a href="lapack-3.11.0.html">Release Notes for LAPACK 3.11.0</a></strong></p></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_5_previous_releases">5. Previous releases</h2>
-<div class="sectionbody">
-<div class="paragraph"><p><a href="Errata/errata_3.3.0.html">Errata in LAPACK, version 3.3.0</a></p></div>
-<div class="paragraph"><p><a href="release_notes.v3.0.html">Errata in LAPACK, version 3.0</a></p></div>
-<div class="paragraph"><p><a href="release_notes.v2.0">Errata in LAPACK, version 2.0</a></p></div>
-<div class="paragraph"><p><a href="installation.hints">old Machine-specific Installation Hints</a></p></div>
-</div>
-</div>
 </div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2022-11-14 15:24:39 PST
+ 2022-11-14 15:24:33 PST
 </div>
 </div>
 </body>

@@ -5,11 +5,11 @@ LAPACK RELEASE NOTES
 1. Latest LAPACK Release
 ------------------------
 
-*Version:* 3.11.0
+*Version:* 3.10.1
 
-*Release date:* November 11, 2022
+*Release date:* April 12, 2022
 
-link:lapack-3.11.0.html[*LAPACK 3.11.0 Release Notes*]
+link:lapack-3.10.1.html[*LAPACK 3.10.1 Release Notes*]
 
 
 2. Latest LAPACK Errata
@@ -18,9 +18,9 @@ LAPACK has been tested on a variety of architectures.  However, keep in mind tha
 
 *NEW* : bug are now tracked in our GitHub Repository
 
- * link:https://github.com/Reference-LAPACK/lapack/milestone/2?closed=1[Closed bugs]
- * link:https://github.com/Reference-LAPACK/lapack/issues?utf8=✓&q=is%3Aissue%20is%3Aopen%20label%3A%22Type%3A%20Bug%22%20[Open bugs]
- * link:https://github.com/Reference-LAPACK/lapack/issues[All open issues]
+ * link:https://github.com/Reference-LAPACK/lapack/milestone/2?closed=1 [Closed bugs]
+ * link:https://github.com/Reference-LAPACK/lapack/issues?utf8=✓&q=is%3Aissue%20is%3Aopen%20label%3A%22Type%3A%20Bug%22%20 [Open bugs]
+ * link:https://github.com/Reference-LAPACK/lapack/issues [All open issues]
 
 
 3. Errata for LAPACK Users' Guide, Third Edition
@@ -82,7 +82,6 @@ link:html/errata.lug[Errata in LAPACK Users' Guide, Third Edition]
 
  * Version 3.10.1: April 12, 2022 link:lapack-3.10.1.html[Release Notes for LAPACK 3.10.1]
 
-*Version 3.11.0: November 11, 2022 link:lapack-3.11.0.html[Release Notes for LAPACK 3.11.0]*
 
 5. Previous releases
 -------------------
